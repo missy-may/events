@@ -10,16 +10,18 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL0opyQmQ0D_RJQcHVPkIVmQXYEGnOj7k">
     </script>
-    <script type="text/javascript"
-      src="http://code.jquery.com/jquery-latest.min.js">
-    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript">
       function initialize() {
-        var url = 'https://api.nytimes.com/svc/events/v2/listings.json?11=40.7127,-74.0059&radius=2500&sort=dist+asc&filters=category:(Theater+Dance)&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513'
-        $.getJSON(url,
-         function(data) {
-            alert(data);         
-          });
+        var my_url = "http://api.nytimes.com/svc/events/v2/listings.jsonp?11=40.7127,-74.0059&filters=category:(Dance)&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513";
+       
+        $.ajax({ 
+          url: my_url,
+          dataType:'JSONP',
+          jsonpCallback: 'callback',
+          type:'GET'
+        });
+    
         var mapOptions = {
           center: new google.maps.LatLng(40.7127, -74.0059),
           zoom: 14
@@ -27,13 +29,17 @@
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
         setMarkers(map, events);
-      }
+      };
       var events = [
         ['Event 1', 40.7127, -74.0059],
         ['Event 2', 40.7117, -74.0125],
         ['Event 2', 40.6892, -74.0444]
-      ]
-
+      ];
+      function callback(result){
+        var results = result["results"];
+        var result = results[0];
+        var event_id = result["event_id"];
+      };
       function setMarkers(map, locations) {
         for (var i = 0; i < locations.length; i++) {
           var myEvent = locations[i];
@@ -44,7 +50,7 @@
               title: myEvent[0]
           });
         }
-      }
+      };
       // google.maps.event.addListener(map, 'bounds_changed', function() {map.setZoom(8)}
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
