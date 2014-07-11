@@ -10,8 +10,16 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL0opyQmQ0D_RJQcHVPkIVmQXYEGnOj7k">
     </script>
+    <script type="text/javascript"
+      src="http://code.jquery.com/jquery-latest.min.js">
+    </script>
     <script type="text/javascript">
       function initialize() {
+        var url = 'https://api.nytimes.com/svc/events/v2/listings.json?11=40.7127,-74.0059&radius=2500&sort=dist+asc&filters=category:(Theater+Dance)&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513'
+        $.getJSON(url,
+         function(data) {
+            alert(data);         
+          });
         var mapOptions = {
           center: new google.maps.LatLng(40.7127, -74.0059),
           zoom: 14
