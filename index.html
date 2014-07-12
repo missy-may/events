@@ -5,7 +5,7 @@
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; padding: 10px }
-      #map-canvas { height: 300px; width: 600px; margin: 50px; padding: 10px }
+      #map-canvas { height: 300px; width: 800px; margin: 50px; padding: 10px }
     </style>
         <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL0opyQmQ0D_RJQcHVPkIVmQXYEGnOj7k">
@@ -36,9 +36,11 @@
               title: myEvent["event_name"]
           });
 
+
           google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
-            infoWindow.setContent(events[i]["web_description"]);
+              content = '<h1>' + events[i]["event_name"] + '</h1>' + events[i]["web_description"]
+            infoWindow.setContent(content);
             infoWindow.open(this.map, marker);
             };
           })(marker, i));
@@ -59,19 +61,24 @@
       function fillMap()
       {
         setCategories();
-        my_url = "http://api.nytimes.com/svc/events/v2/listings.jsonp?11=LATITUDE,LONGITUDECATEGORIES&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513";
-        my_url = my_url.replace("LATITUDE",center_latitude);
-        my_url = my_url.replace("LONGITUDE", center_longitude);
-        my_url = my_url.replace("CATEGORIES", getCategoriesUrl(categories));
-        alert(my_url);
-        $.ajax({ 
-          url: my_url,
-          dataType:'JSONP',
-          jsonpCallback: 'callback',
-          type:'GET'
-        });
-        
-        
+        if (categories.length < 1)
+        { 
+          alert('Please select a category.');
+        }
+        else
+        {
+          my_url = "http://api.nytimes.com/svc/events/v2/listings.jsonp?11=LATITUDE,LONGITUDECATEGORIES&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513";
+          my_url = my_url.replace("LATITUDE",center_latitude);
+          my_url = my_url.replace("LONGITUDE", center_longitude);
+          my_url = my_url.replace("CATEGORIES", getCategoriesUrl(categories));
+          $.ajax({ 
+            url: my_url,
+            dataType:'JSONP',
+            jsonpCallback: 'callback',
+            type:'GET'
+          });
+          
+        };
         this.mapOptions = {
           center: new google.maps.LatLng(center_latitude, center_longitude),
           zoom: 10
@@ -82,7 +89,6 @@
       function callback(result){
         var events = result["results"];
         setMarkers(map,events);
-        alert(events.length);
         
       };
       // google.maps.event.addListener(this.map, 'bounds_changed', function() {map.setZoom(8)}
@@ -117,16 +123,16 @@
 
     <div>
       <div>
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="movies" />Movies<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="theater" />Theater<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="spareTimes" />Spare Times<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="art" />Art<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="forChildren" />For Children<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="pop" />Pop<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="jazz" />Jazz<br />
-         <input type="checkbox" name="categories" onchange="fillMap();" checked value="classical" />classical<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="comedy" />Comedy<br />
-        <input type="checkbox" name="categories" onchange="fillMap();" checked value="dance" />Dance<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="movies" />Movies<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="theater" />Theater<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="spareTimes" />Spare Times<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="art" />Art<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="forChildren" />For Children<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="pop" />Pop<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="jazz" />Jazz<br />
+         <input type="checkbox" name="categories" onchange="fillMap();" value="classical" />classical<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="comedy" />Comedy<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" value="dance" />Dance<br />
 
       </div>
       <div id="map-canvas"/>
