@@ -61,11 +61,7 @@
       function fillMap()
       {
         setCategories();
-        if (categories.length < 1)
-        { 
-          alert('Please select a category.');
-        }
-        else
+        if (categories.length > 0)
         {
           my_url = "http://api.nytimes.com/svc/events/v2/listings.jsonp?11=LATITUDE,LONGITUDECATEGORIES&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513";
           my_url = my_url.replace("LATITUDE",center_latitude);
@@ -130,7 +126,7 @@
         <input type="checkbox" name="categories" onchange="fillMap();" value="forChildren" />For Children<br />
         <input type="checkbox" name="categories" onchange="fillMap();" value="pop" />Pop<br />
         <input type="checkbox" name="categories" onchange="fillMap();" value="jazz" />Jazz<br />
-         <input type="checkbox" name="categories" onchange="fillMap();" value="classical" />classical<br />
+         <input type="checkbox" name="categories" onchange="fillMap();" value="classical" />Classical<br />
         <input type="checkbox" name="categories" onchange="fillMap();" value="comedy" />Comedy<br />
         <input type="checkbox" name="categories" onchange="fillMap();" value="dance" />Dance<br />
 
