@@ -22,8 +22,9 @@
       var center_longitude = -74.0059;
       var categories = [];
       var my_url;
+      var my_zoom = 10
       function initialize() {
-         fillMap();
+        fillMap();
       };
 
       function setMarkers(map, events) {
@@ -77,26 +78,30 @@
         };
         this.mapOptions = {
           center: new google.maps.LatLng(center_latitude, center_longitude),
-          zoom: 10
+          zoom: this.my_zoom
         };
         window.map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
+        
+
+   
+        google.maps.event.addListener(map, 'dragend', function() { 
+            center = map.getCenter().toString();
+            comma_index = center.indexOf(',');
+            latitude_end = comma_index - 1
+            longitude_start = comma_index + 2
+            longitude_end = center.length - 2
+            center_latitude = center.substring(1,latitude_end);
+            center_longitude = center.substring(longitude_start,longitude_end);
+            tmap.setZoom(map.getZoom());
+            fillMap();
+           } );
       };
       function callback(result){
         var events = result["results"];
         setMarkers(map,events);
         
       };
-      // google.maps.event.addListener(this.map, 'bounds_changed', function() {map.setZoom(8)}
-      //google.maps.event.addDomListener(window.map, 'center_changed', function(){ });
-      
-      // function setZoom()
-      // {
-      //   window.map = new google.maps.Map(document.getElementById("map-canvas"),
-      //       mapOptions);
-      //   zoom = window.map.getZoom();
-      // }
-      //google.maps.event.addDomListener(window.map, 'center_changed', function(){ });
       google.maps.event.addDomListener(window, 'load', initialize);
       function setCategories (){
         elements = document.getElementsByName("categories")
