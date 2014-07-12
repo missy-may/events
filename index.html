@@ -16,7 +16,16 @@
         border-color: #717171;
         margin-left: 75px;
         background-color: rgb(235, 232, 232);
+        margin-top: 135px;
         auto;
+      }
+      #content-header{
+        font-size: 40px;
+        margin-left: inherit;
+        padding-top: 10px;
+        font-style: oblique;
+        font-weight: bold;
+        padding-bottom: 10px;
       }
       body {
         
@@ -48,17 +57,14 @@
       #categories{
         padding: 10px;
         margin-left: inherit;
+        color: #555555;
       }
       .top-box{
         width: 137px;
         display:inline;
         float:left;
+        height: 20px;
 
-      }
-      .bottom-box{
-        width:100px;
-        display:inline;
-        float:left;
       }
       label{
         font-weight: bold;
@@ -174,6 +180,7 @@
   <body>
     <div id='background'>
       <div id='content'>
+        <div id='content-header'>Pick a category to find an event for you!</div>
         <div id='categories'>
           <div class='top-box'>
             <label><input type="checkbox" name="categories" onchange="fillMap();" value="movies" />Movies</label>
