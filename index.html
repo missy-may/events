@@ -4,46 +4,132 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
       html { height: 100% }
-      body { height: 100%; margin: 100px; padding: 10px }
-      #map-canvas { height: 500px; width: 500px; margin: 100px; padding: 10px }
+      body { height: 100%; padding: 10px }
+      #map-canvas { height: 300px; width: 600px; margin: 50px; padding: 10px }
     </style>
-    <script type="text/javascript"
+        <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL0opyQmQ0D_RJQcHVPkIVmQXYEGnOj7k">
     </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(40.7127, -74.0059),
-          zoom: 14
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-        setMarkers(map, events);
-      }
-      var events = [
-        ['Event 1', 40.7127, -74.0059],
-        ['Event 2', 40.7117, -74.0125],
-        ['Event 2', 40.6892, -74.0444]
-      ]
 
-      function setMarkers(map, locations) {
-        for (var i = 0; i < locations.length; i++) {
-          var myEvent = locations[i];
-          var myLatLng = new google.maps.LatLng(myEvent[1], myEvent[2]);
+      var map;
+      var mapOptions;
+      var infoWindow = new google.maps.InfoWindow({
+        content: ""
+        });
+      var center_latitude = 40.7127;
+      var center_longitude = -74.0059;
+      var categories = [];
+      var my_url;
+      function initialize() {
+         fillMap();
+      };
+
+      function setMarkers(map, events) {
+        for (var i = 0; i < events.length; i++) {
+          var myEvent = events[i];
+          var myLatLng = new google.maps.LatLng(myEvent["geocode_latitude"], myEvent["geocode_longitude"]);
           var marker = new google.maps.Marker({
               position: myLatLng,
-              map: map,
-              title: myEvent[0]
+              map: this.map,
+              title: myEvent["event_name"]
           });
+
+          google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+            infoWindow.setContent(events[i]["web_description"]);
+            infoWindow.open(this.map, marker);
+            };
+          })(marker, i));
+        };
+      };
+      function getCategoriesUrl(categories){
+        if (categories.length > 0)
+        {
+          url = "&filters=category:(CATEGORIES)"
+          return url.replace('CATEGORIES', categories.join('+'));
         }
-      }
-      // google.maps.event.addListener(map, 'bounds_changed', function() {map.setZoom(8)}
+        else 
+        {
+          return "";
+        };
+      };
+      
+      function fillMap()
+      {
+        setCategories();
+        my_url = "http://api.nytimes.com/svc/events/v2/listings.jsonp?11=LATITUDE,LONGITUDECATEGORIES&api-key=1b6ec24de1512db2fae47f5165ce39ea:6:69563513";
+        my_url = my_url.replace("LATITUDE",center_latitude);
+        my_url = my_url.replace("LONGITUDE", center_longitude);
+        my_url = my_url.replace("CATEGORIES", getCategoriesUrl(categories));
+        alert(my_url);
+        $.ajax({ 
+          url: my_url,
+          dataType:'JSONP',
+          jsonpCallback: 'callback',
+          type:'GET'
+        });
+        
+        
+        this.mapOptions = {
+          center: new google.maps.LatLng(center_latitude, center_longitude),
+          zoom: 10
+        };
+        window.map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+      };
+      function callback(result){
+        var events = result["results"];
+        setMarkers(map,events);
+        alert(events.length);
+        
+      };
+      // google.maps.event.addListener(this.map, 'bounds_changed', function() {map.setZoom(8)}
+      //google.maps.event.addDomListener(window.map, 'center_changed', function(){ });
+      
+      // function setZoom()
+      // {
+      //   window.map = new google.maps.Map(document.getElementById("map-canvas"),
+      //       mapOptions);
+      //   zoom = window.map.getZoom();
+      // }
+      //google.maps.event.addDomListener(window.map, 'center_changed', function(){ });
       google.maps.event.addDomListener(window, 'load', initialize);
+      function setCategories (){
+        elements = document.getElementsByName("categories")
+        categories = [];
+        for (var i = 0; i < elements.length; i++)
+        {
+          if (elements[i].checked == true)
+          {
+            categories.push(elements[i].value)
+          };
+        };
+      };
+
+
     </script>
   </head>
   <body>
   <h1>New York Times: Events</h1>
   <hr>
-    <div id="map-canvas"/>
+
+    <div>
+      <div>
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="movies" />Movies<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="theater" />Theater<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="spareTimes" />Spare Times<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="art" />Art<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="forChildren" />For Children<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="pop" />Pop<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="jazz" />Jazz<br />
+         <input type="checkbox" name="categories" onchange="fillMap();" checked value="classical" />classical<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="comedy" />Comedy<br />
+        <input type="checkbox" name="categories" onchange="fillMap();" checked value="dance" />Dance<br />
+
+      </div>
+      <div id="map-canvas"/>
+    </div>
   </body>
 </html>
