@@ -9,13 +9,12 @@
       }
       #content{
         margin: 100px;
-        background-color: white;
+        background-color: floralwhite;
         z-index: 2;
         border-width: 10px;
         border-style: groove;
         border-color: #717171;
         margin-left: 75px;
-        background-color: rgb(235, 232, 232);
         margin-top: 135px;
         auto;
       }
@@ -31,7 +30,7 @@
 
       #content-header{
         font-size: 40px;
-        margin-left: inherit;
+        margin-left: 200px;
         padding-top: 10px;
         font-style: oblique;
         font-weight: bold;
@@ -66,6 +65,9 @@
         font-size: smaller;
 
       }
+      #infoWindow{
+        width: 150px !important;
+      }
 
       /***Categrory Elements***/
       #categories{
@@ -95,7 +97,8 @@
       var map;
       var mapOptions;
       var infoWindow = new google.maps.InfoWindow({
-        content: ""
+        content: "",
+        maxWidth: 400
         });
       var center_latitude = 40.7127;
       var center_longitude = -74.0059;
@@ -208,39 +211,39 @@
   <body>
     <div id='background'>
       <div id='content'>
-        <div id='content-header'>Pick a category to find an event for you!</div>
+        <div id='content-header'>New York City Events!</div>
         <hr>
         <div id='categories'>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="movies" />Movies</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="movies" />Movies</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="theater" />Theater</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="theater" />Theater</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="spareTimes" />Spare Times</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="spareTimes" />Spare Times</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="art" />Art</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="art" />Art</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="forChildren" />For Children</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="forChildren" />For Children</label>
             <br/>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="pop" />Pop</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="pop" />Pop</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="jazz" />Jazz</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="jazz" />Jazz</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="classical" />Classical</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="classical" />Classical</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="comedy" />Comedy</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="comedy" />Comedy</label>
           </div>
           <div class='top-box'>
-            <label><input type="checkbox" name="categories" onchange="fillMap();" value="dance" />Dance</label>
+            <label><input type="checkbox" name="categories" onchange="fillMap();" checked value="dance" />Dance</label>
           </div>
         </div>
         <br />
