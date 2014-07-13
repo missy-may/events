@@ -19,18 +19,24 @@
         margin-top: 135px;
         auto;
       }
+
+      h2 {
+        font-family: fantasy;
+        margin-bottom: -10px;
+        margin-top: 3px;
+      }
+      h5{
+        margin-top: 0px;
+      }
+
       #content-header{
         font-size: 40px;
         margin-left: inherit;
         padding-top: 10px;
         font-style: oblique;
         font-weight: bold;
-        padding-bottom: 10px;
       }
-      body {
-        
-
-      }
+      
       #background{
         height: 100%;
         padding: 10px;
@@ -51,6 +57,14 @@
         border-style: outset;
         border-width: 2px;
         margin-left: 65px;
+        margin-top: 3px;
+        font-family: fantasy;
+      }
+
+      .description {
+        font-family: fantasy;
+        font-size: smaller;
+
       }
 
       /***Categrory Elements***/
@@ -58,6 +72,7 @@
         padding: 10px;
         margin-left: inherit;
         color: #555555;
+        padding-bottom: 25px;
       }
       .top-box{
         width: 137px;
@@ -104,7 +119,20 @@
 
           google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
-              content = '<h1>' + events[i]["event_name"] + '</h1>' + events[i]["web_description"]
+              venue_name = events[i]["venue_name"].toString();
+              content = 
+                '<h2>' + 
+                events[i]["event_name"] + 
+                '</h2><hr><div class=\"description\">' + 
+                events[i]["web_description"] +
+                "</div><br/><div class=\"link_info\">More info <a href=\"" +
+                 events[i]["event_detail_url"] + "\">here</a></div>" +
+                '<h5>' +
+                "<a href=\"" +
+                events[i]["venue_detail_url"] +
+                "\">" +
+                venue_name +
+                "</a></h5>";
             infoWindow.setContent(content);
             infoWindow.open(this.map, marker);
             };
@@ -181,6 +209,7 @@
     <div id='background'>
       <div id='content'>
         <div id='content-header'>Pick a category to find an event for you!</div>
+        <hr>
         <div id='categories'>
           <div class='top-box'>
             <label><input type="checkbox" name="categories" onchange="fillMap();" value="movies" />Movies</label>
